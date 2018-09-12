@@ -1,62 +1,117 @@
 module dtools.fp;
 
-/++
-    take - Usage : take(3, [1,2,3,4,5]) == [1,2,3]
-+/
-T[] take(T) (int n, T[] list) {
-    return list[0 .. n];
-}
+template FP(T) {
+    import dtools.native : take, takeWhile, map, drop, dropWhile, reduce;
 
-/++
-    takeWhile - Usage : takeWhile!int(x => x < 3, seq(1,10)) == [1,2]
-+/
-T[] takeWhile(T) (bool delegate(T) p, T[] list) {
-    auto n = 0;
-    T[] result;
-    while(p(list[n])) {
-        result ~= list[n];
-        n++;
+    alias Condition = bool delegate(T);
+    alias Func = T delegate(T);
+    alias TFunc = T[] delegate(T[]);
+    alias DFunc = T delegate(T, T);
+
+    /++
+        Functional Programming Pipe
+    +/
+    struct Pipe {
+        T[] list;
+
+        /++
+            Input constructor
+        +/
+        this(T[] input) {
+            this.list = input;
+        }
+
+        /++
+            Same as constructor
+        +/
+        void input(T[] array) {
+            this.list = array;
+        }
+
+        /++
+            Output with copy
+        +/
+        T[] output() {
+            return this.list[];
+        }
+
+        /++
+            Process
+        +/
+        void proc(TFunc[] funcs...) {
+            foreach(f; funcs) {
+                this.list = f(this.list);
+            }
+        }
     }
-    return result;
-}
 
-/++
-    map - Usage : map!int(x => x + 3, seq(1,4)) == [4, 5, 6, 7]
-+/
-T[] map(T) (T delegate(T) f, T[] list) {
-    T[] result; result.length = list.length;
-    foreach(i, ref x; list) {
-        result[i] = f(x);
+    /++
+        seq (Like R)
+    +/
+    T[] seq (T start, T end, T step = 1) {
+        T diff = (end - start) / step;
+        auto l = diff + 1;
+        T[] result;
+        result.length = l;
+        foreach(i; 0 .. l) {
+            result[i] = start + step * i;
+        }
+        return result;
     }
-    return result;
-}
 
-/++
-    drop - Usage : drop(3, seq(1,5)) == [4,5]
-+/
-T[] drop(T) (int n, T[] list) {
-    assert(n <= list.length, "Exceed drop range");
-    return list[n .. $];
-}
-
-/++
-    dropWhile - Usage : dropWhile!int(x => x < 3, seq(1,5)) == [3,4,5]
-+/
-T[] dropWhile(T) (bool delegate(T) p, T[] list) {
-    auto n = 0;
-    while(p(list[n])) {
-        n++;
+    /++
+        take
+    +/
+    TFunc take(int n) {
+        return (T[] xs) => take(n, xs);
     }
-    return list[n .. $];
-}
 
-/++
-    reduce
-+/
-T reduce(T) (T delegate(T, T) op, T[] list) {
-    T result = list[0];
-    foreach(i; 1 .. list.length) {
-        result = op(result, list[i]); 
+    /++
+        takeWhile
+    +/
+    TFunc takeWhile(Condition p) {
+        return (T[] xs) => takeWhile(p, xs);
     }
-    return result;
+
+    /++
+        map
+    +/
+    TFunc map(Func f) {
+        return (T[] xs) => map(f, xs);
+    }
+
+    /++
+        drop
+    +/
+    TFunc drop(int n) {
+        return (T[] xs) => drop(n, xs);
+    }
+
+    /++
+        dropWhile
+    +/
+    TFunc dropWhile(Condition p) {
+        return (T[] xs) => dropWhile(p, xs);
+    }
+
+    /++
+        reduce
+    +/
+    TFunc reduce(DFunc op) {
+        return (T[] xs) => [reduce(op, xs)];
+    }
+
+    /++
+        sum
+    +/
+    TFunc sum() {
+        return reduce((x,y) => x + y);
+    }
+
+    /++
+        prod
+    +/
+    TFunc prod() {
+        return reduce((x,y) => x * y);
+    }
 }

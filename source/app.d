@@ -1,8 +1,8 @@
 import std.stdio : writeln;
 
 // import dtools.fp;
-import dtools.pipe;
 import dtools.fp;
+import dtools.native;
 
 void main() {
 	mixin FP!long;
