@@ -60,3 +60,17 @@ T reduce(T) (T delegate(T, T) op, T[] list) {
     }
     return result;
 }
+
+/++
+    filter - Usage : filter!int(x => x%2 == 0, seq(1,10)) == [2,4,6,8,10]
++/
+T[] filter(T) (bool delegate(T) p, T[] list) {
+    auto n = 0;
+    T[] result;
+    foreach(x; list) {
+        if (p(x)) {
+            result ~= x;
+        }
+    }
+    return result;
+}

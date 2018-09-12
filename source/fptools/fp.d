@@ -1,7 +1,7 @@
 module fptools.fp;
 
 template FP(T) {
-    import fptools.native : take, takeWhile, map, drop, dropWhile, reduce;
+    import fptools.native : take, takeWhile, map, drop, dropWhile, reduce, filter;
 
     alias Condition = bool delegate(T);
     alias Func = T delegate(T);
@@ -113,5 +113,12 @@ template FP(T) {
     +/
     TFunc prod() {
         return reduce((x,y) => x * y);
+    }
+
+    /++
+        filter
+    +/
+    TFunc filter(Condition p) {
+        return (T[] xs) => filter(p, xs);
     }
 }
