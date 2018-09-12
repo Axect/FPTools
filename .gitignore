@@ -1,0 +1,14 @@
+.dub
+docs.json
+__dummy.html
+docs/
+fptools.so
+fptools.dylib
+fptools.dll
+fptools.a
+fptools.lib
+fptools-test-*
+*.exe
+*.o
+*.obj
+*.lst
