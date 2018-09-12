@@ -20,3 +20,13 @@ T[] takeWhile(T) (bool delegate(T) p, T[] list) {
     return result;
 }
 
+/++
+    map - Usage : map!int(x => x + 3, seq(1,4)) == [4, 5, 6, 7]
++/
+T[] map(T) (T delegate(T) f, T[] list) {
+    T[] result; result.length = list.length;
+    foreach(i, ref x; list) {
+        result[i] = f(x);
+    }
+    return result;
+}
