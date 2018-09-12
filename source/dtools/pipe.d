@@ -1,6 +1,8 @@
 module dtools.pipe;
 
 template FP(T) {
+    import dtools.fp : take, takeWhile, map, drop, dropWhile;
+
     alias Condition = bool delegate(T);
     alias Func = T delegate(T);
     alias TFunc = T[] delegate(T[]);
@@ -40,18 +42,37 @@ template FP(T) {
     }
 
     /++
+        take
+    +/
+    TFunc take(int n) {
+        return (T[] xs) => take(n, xs);
+    }
+
+    /++
+        takeWhile
+    +/
+    TFunc takeWhile(Condition p) {
+        return (T[] xs) => takeWhile(p, xs);
+    }
+
+    /++
         map
     +/
     TFunc map(Func f) {
-        import dtools.fp : map;
         return (T[] xs) => map(f, xs);
     }
 
     /++
-        take
+        drop
     +/
-    TFunc take(int n) {
-        import dtools.fp : take;
-        return (T[] xs) => take(n, xs);
+    TFunc drop(int n) {
+        return (T[] xs) => drop(n, xs);
+    }
+
+    /++
+        dropWhile
+    +/
+    TFunc dropWhile(Condition p) {
+        return (T[] xs) => dropWhile(p, xs);
     }
 }

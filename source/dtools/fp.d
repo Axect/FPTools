@@ -30,3 +30,22 @@ T[] map(T) (T delegate(T) f, T[] list) {
     }
     return result;
 }
+
+/++
+    drop - Usage : drop(3, seq(1,5)) == [4,5]
++/
+T[] drop(T) (int n, T[] list) {
+    assert(n <= list.length, "Exceed drop range");
+    return list[n .. $];
+}
+
+/++
+    dropWhile - Usage : dropWhile!int(x => x < 3, seq(1,5)) == [3,4,5]
++/
+T[] dropWhile(T) (bool delegate(T) p, T[] list) {
+    auto n = 0;
+    while(p(list[n])) {
+        n++;
+    }
+    return list[n .. $];
+}
