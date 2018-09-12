@@ -1,7 +1,7 @@
-module dtools.fp;
+module fptools.fp;
 
 template FP(T) {
-    import dtools.native : take, takeWhile, map, drop, dropWhile, reduce;
+    import fptools.native : take, takeWhile, map, drop, dropWhile, reduce;
 
     alias Condition = bool delegate(T);
     alias Func = T delegate(T);
