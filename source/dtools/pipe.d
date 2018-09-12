@@ -1,12 +1,16 @@
 module dtools.pipe;
 
 template FP(T) {
-    import dtools.fp : take, takeWhile, map, drop, dropWhile;
+    import dtools.fp : take, takeWhile, map, drop, dropWhile, reduce;
 
     alias Condition = bool delegate(T);
     alias Func = T delegate(T);
     alias TFunc = T[] delegate(T[]);
+    alias DFunc = T delegate(T, T);
 
+    /++
+        Functional Programming Pipe
+    +/
     struct Pipe {
         T[] list;
 
@@ -42,6 +46,20 @@ template FP(T) {
     }
 
     /++
+        seq (Like R)
+    +/
+    T[] seq (T start, T end, T step = 1) {
+        T diff = (end - start) / step;
+        auto l = diff + 1;
+        T[] result;
+        result.length = l;
+        foreach(i; 0 .. l) {
+            result[i] = start + step * i;
+        }
+        return result;
+    }
+
+    /++
         take
     +/
     TFunc take(int n) {
@@ -74,5 +92,26 @@ template FP(T) {
     +/
     TFunc dropWhile(Condition p) {
         return (T[] xs) => dropWhile(p, xs);
+    }
+
+    /++
+        reduce
+    +/
+    TFunc reduce(DFunc op) {
+        return (T[] xs) => [reduce(op, xs)];
+    }
+
+    /++
+        sum
+    +/
+    TFunc sum() {
+        return reduce((x,y) => x + y);
+    }
+
+    /++
+        prod
+    +/
+    TFunc prod() {
+        return reduce((x,y) => x * y);
     }
 }

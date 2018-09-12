@@ -1,22 +1,22 @@
 import std.stdio : writeln;
 
 // import dtools.fp;
-import dtools.seq;
 import dtools.pipe;
 import dtools.fp;
 
 void main() {
-	mixin FP!int;
+	mixin FP!long;
 
 	Pipe p;
 	p.input(seq(1,100));
 	p.proc(
-		map(x => x + 1),
-		takeWhile(x => x < 50),
-		map(x => x - 1),
+		map(x => 2 * x),
+		takeWhile(x => x < 100),
+		map(x => x / 2),
 		take(40),
 		drop(10),
-		dropWhile(x => x < 30)
+		dropWhile(x => x < 30),
+		prod
 	);
-	p.output.writeln;
+	p.output[0].writeln;
 }

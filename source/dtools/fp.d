@@ -49,3 +49,14 @@ T[] dropWhile(T) (bool delegate(T) p, T[] list) {
     }
     return list[n .. $];
 }
+
+/++
+    reduce
++/
+T reduce(T) (T delegate(T, T) op, T[] list) {
+    T result = list[0];
+    foreach(i; 1 .. list.length) {
+        result = op(result, list[i]); 
+    }
+    return result;
+}
