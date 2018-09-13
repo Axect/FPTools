@@ -40,7 +40,7 @@ void main() {
 		take(40),                 // take (Haskell like)
 		drop(10),                 // drop (Haskell like)
 		dropWhile(x => x < 30),   // dropWhile (Haskell like)
-		prod                      // Product (Haskell like)
+		reduce((x,y) => x * y)    // reduce (Haskell like)
 	);
 	p.output[0].writeln;          // output function exports result as sequence
 }

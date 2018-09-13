@@ -5,7 +5,7 @@ import fptools.fp;
 import fptools.native;
 
 void main() {
-	mixin FP!long;
+	mixin FP!double;
 
 	Pipe p;
 	p.input(seq(1,100));

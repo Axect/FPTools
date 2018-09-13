@@ -50,11 +50,11 @@ template FP(T) {
     +/
     T[] seq (T start, T end, T step = 1) {
         T diff = (end - start) / step;
-        auto l = diff + 1;
+        ulong l = cast(ulong)diff + 1;
         T[] result;
         result.length = l;
         foreach(i; 0 .. l) {
-            result[i] = start + step * i;
+            result[i] = start + step * cast(T)i;
         }
         return result;
     }
@@ -99,20 +99,6 @@ template FP(T) {
     +/
     TFunc reduce(DFunc op) {
         return (T[] xs) => [reduce(op, xs)];
-    }
-
-    /++
-        sum
-    +/
-    TFunc sum() {
-        return reduce((x,y) => x + y);
-    }
-
-    /++
-        prod
-    +/
-    TFunc prod() {
-        return reduce((x,y) => x * y);
     }
 
     /++
