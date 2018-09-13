@@ -1,12 +1,12 @@
 module fptools.fp;
 
 template FP(T) {
-    import fptools.native : take, takeWhile, map, drop, dropWhile, reduce, filter;
+    import fptools.native : take, takeWhile, map, drop, dropWhile, reduce, filter, zipWith;
 
     alias Condition = bool delegate(T);
     alias Func = T delegate(T);
-    alias TFunc = T[] delegate(T[]);
     alias DFunc = T delegate(T, T);
+    alias TFunc = T[] delegate(T[]);
 
     /++
         Functional Programming Pipe
@@ -120,5 +120,12 @@ template FP(T) {
     +/
     TFunc filter(Condition p) {
         return (T[] xs) => filter(p, xs);
+    }
+
+    /++
+        zipWith
+    +/
+    TFunc zipWith(DFunc op, T[] other) {
+        return (T[] xs) => zipWith(op, xs, other);
     }
 }

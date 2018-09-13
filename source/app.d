@@ -1,8 +1,8 @@
 import std.stdio : writeln;
 
 // import dtools.fp;
-import dtools.fp;
-import dtools.native;
+import fptools.fp;
+import fptools.native;
 
 void main() {
 	mixin FP!long;
@@ -15,8 +15,8 @@ void main() {
 		map(x => x / 2),
 		take(40),
 		drop(10),
-		dropWhile(x => x < 30),
-		prod
+		dropWhile(x => x <= 30),
+		zipWith((x,y) => x + y, seq(1,10))
 	);
-	p.output[0].writeln;
+	p.output.writeln;
 }

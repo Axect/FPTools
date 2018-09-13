@@ -74,3 +74,18 @@ T[] filter(T) (bool delegate(T) p, T[] list) {
     }
     return result;
 }
+
+/++
+    zipWith - Usage : zipWith
++/
+T[] zipWith(T) (T delegate(T, T) op, T[] t1, T[] t2) {
+    import std.algorithm.comparison : min;
+    
+    auto m = min(t1.length, t2.length);
+    T[] result;
+    result.length = m;
+    foreach(i; 0 .. m) {
+        result[i] = op(t1[i], t2[i]);
+    }
+    return result;
+}
