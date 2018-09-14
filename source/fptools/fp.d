@@ -13,8 +13,8 @@ template FP(T) {
         Functional Programming Pipe
     +/
     struct Pipe {
-        import fptools.native : reduce, all;
-        
+        import fptools.native : reduce, all, any;
+
         T[] list;
 
         /++
@@ -59,6 +59,13 @@ template FP(T) {
         +/
         bool all(Condition p) {
             return all(p, this.list);
+        }
+
+        /++
+            any
+        +/
+        bool any(Condition p) {
+            return any(p, this.list);
         }
     }
 

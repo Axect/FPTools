@@ -101,3 +101,15 @@ bool all(T) (bool delegate(T) p, T[] list) {
     }
     return true;
 }
+
+/++
+    any - Usage: any(x => x%2 == 0, [2, 5, 7]) == true
++/
+bool any(T) (bool delegate(T) p, T[] list) {
+    foreach(x; list) {
+        if (p(x)) {
+            return true;
+        }
+    }
+    return false;
+}

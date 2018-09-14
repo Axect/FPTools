@@ -28,4 +28,5 @@ void main() {
 	);
 	q.output.writeln;
 	q.all(x => x % 2 == 0).writeln;
+	q.any(x => x % 2 == 0).writeln;
 }
