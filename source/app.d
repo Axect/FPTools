@@ -19,4 +19,13 @@ void main() {
 		zipWith((x,y) => x + y, seq(1,10))
 	);
 	p.output.writeln;
+	p.reduce((x, y) => x + y).writeln;
+
+	Pipe q;
+	q.input([2, 4, 6, 7]);
+	q.proc(
+		map(x => x - 2)
+	);
+	q.output.writeln;
+	q.all(x => x % 2 == 0).writeln;
 }

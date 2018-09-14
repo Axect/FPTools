@@ -76,7 +76,7 @@ T[] filter(T) (bool delegate(T) p, T[] list) {
 }
 
 /++
-    zipWith - Usage : zipWith
+    zipWith - Usage: zipWith((x, y) => x + y, [1,2], [3,4]) == [4, 6]
 +/
 T[] zipWith(T) (T delegate(T, T) op, T[] t1, T[] t2) {
     import std.algorithm.comparison : min;
@@ -88,4 +88,16 @@ T[] zipWith(T) (T delegate(T, T) op, T[] t1, T[] t2) {
         result[i] = op(t1[i], t2[i]);
     }
     return result;
+}
+
+/++
+    all - Usage: all(x => x%2 == 0, [2, 4, 6]) == true
++/
+bool all(T) (bool delegate(T) p, T[] list) {
+    foreach(x; list) {
+        if (!p(x)) {
+            return false;
+        }
+    }
+    return true;
 }
